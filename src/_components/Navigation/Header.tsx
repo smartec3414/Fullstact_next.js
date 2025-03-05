@@ -13,7 +13,7 @@ const Header = () => {
         <nav className="md:flex  hidden">
           <ul className="flex items-center  gap-4 lg:gap-7">
             {links.map((link) => (
-              <LinkLi link={link} />
+              <LinkLi key={link.id} link={link} />
             ))}
           </ul>
         </nav>

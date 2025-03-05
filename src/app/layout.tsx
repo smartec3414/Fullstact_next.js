@@ -11,6 +11,7 @@ const font = Cairo({
   weight: ["300", "400", "600", "700"],
 });
 import "./globals.css";
+import Footer from "@/constants/Footer";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,11 +22,12 @@ export default function RootLayout({
       <body className={`${font.className} overflow-x-hidden antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange>
           <Header />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

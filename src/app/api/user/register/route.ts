@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
         username,
         email,
         password: HashedPassword,
+        isAdmin: false, // ← أضف هذا السطر
       },
       select: {
         username: true,
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
         id: true,
         createdAt: true,
         updatedAt: true,
+        isAdmin: true, // ← أضف هذا السطر لضمان إرجاع القيمة
       },
     });
     let token = generateToken({ id: newUser.id, username, isAdmin: false });

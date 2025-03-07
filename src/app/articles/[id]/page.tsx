@@ -1,14 +1,15 @@
 import ArticleItem from "@/_components/ArticlesPage/ArticleItem";
 import { ArticleType } from "@/types/type";
 
-interface ParamsType {
-  params: {
-    id: string;
-  };
-}
-const SingleArtPage = async ({ params }: ParamsType) => {
+const SingleArtPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
+
   let resposne = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${params.id}`
+    `https://jsonplaceholder.typicode.com/posts/${id}`
   );
   if (!resposne.ok) {
     throw new Error("Failed to fetch one article");

@@ -1,5 +1,4 @@
 import { LucideIcon } from "lucide-react";
-import { features } from "process";
 export interface ArticleType {
   id: number;
   title: string;
@@ -17,4 +16,10 @@ export interface arrPricing {
     icon: LucideIcon;
     color?: string;
   }[];
+}
+export interface dashboardLinksType {
+  id: number;
+  title: string;
+  url: string;
+  icon: LucideIcon;
 }

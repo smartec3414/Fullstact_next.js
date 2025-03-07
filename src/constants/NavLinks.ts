@@ -16,7 +16,7 @@ export const links = [
   },
   {
     id: 4,
-    title: "Admin Dashboard",
+    title: "Admin",
     url: "/admin",
   },
 ];

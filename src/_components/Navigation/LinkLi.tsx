@@ -15,7 +15,7 @@ const LinkLi = ({ link }: LinkLiProps) => {
     <li
       className={`font-semibold ${
         pathname === link.url && "text-primary"
-      }  hover:text-primary md:text-base lg:text-lg hover:scale-105 capitalize duration-300`}
+      }  hover:text-primary  md:text-base lg:text-lg hover:scale-105 capitalize duration-300`}
       key={link.id}>
       <Link href={`${link.url}`}>{link.title}</Link>
     </li>

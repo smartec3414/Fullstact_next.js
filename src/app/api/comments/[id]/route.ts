@@ -2,15 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/PrismaDb/db";
 import { z } from "zod";
 import { verifyToken } from "@/lib/generateToken";
-interface Props {
-  params: {
-    id: string;
-  };
-}
-export async function PUT(request: NextRequest, { params }: Props) {
+
+export async function PUT(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const { id } = await params;
+
   try {
     let comment = await prisma.comment.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
     if (!comment) {
       return NextResponse.json(
@@ -40,7 +45,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
       });
     }
     const updComment = await prisma.comment.update({
-      where: { id: Number(params.id) },
+      where: { id: parseInt(id) },
       data: {
         text: body.text,
       },
@@ -53,10 +58,18 @@ export async function PUT(request: NextRequest, { params }: Props) {
     );
   }
 }
-export async function DELETE(request: NextRequest, { params }: Props) {
+export async function DELETE(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const { id } = await params;
   try {
     let comment = await prisma.comment.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
     if (!comment) {
       return NextResponse.json(
@@ -72,7 +85,7 @@ export async function DELETE(request: NextRequest, { params }: Props) {
       );
     }
 
-    await prisma.comment.delete({ where: { id: Number(params.id) } });
+    await prisma.comment.delete({ where: { id: parseInt(id) } });
     return NextResponse.json("comment deleted", { status: 200 });
   } catch (e) {
     return NextResponse.json(

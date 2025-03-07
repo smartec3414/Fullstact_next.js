@@ -5,15 +5,18 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 
-type Params = {
-  params: {
-    id: string;
-  };
-};
-export async function DELETE(request: NextRequest, { params }: Params) {
+export async function DELETE(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const { id } = await params;
   try {
     let findUser = await prisma.user.findUnique({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       include: {
         comments: true,
       },
@@ -64,10 +67,18 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     );
   }
 }
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const { id } = await params;
   try {
     let findUser = await prisma.user.findUnique({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
     });
     if (!findUser) {
       return NextResponse.json({ message: "user not found" }, { status: 404 });
@@ -97,7 +108,15 @@ export async function GET(request: NextRequest, { params }: Params) {
     );
   }
 }
-export async function PUT(request: NextRequest, { params }: Params) {
+export async function PUT(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const { id } = await params;
   try {
     let body = await request.json();
     let validationLogin = z.object({
@@ -112,7 +131,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
       });
     }
     let findUser = await prisma.user.findUnique({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
     });
     if (!findUser) {
       return NextResponse.json({ message: "user not found" }, { status: 404 });
@@ -125,7 +144,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
     }
     if (decodedToken && findUser.id === decodedToken.id) {
       let updatedUser = await prisma.user.update({
-        where: { id: Number(params.id) },
+        where: { id: Number(id) },
         data: {
           username: body.username,
           email: body.email,

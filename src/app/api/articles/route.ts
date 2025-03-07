@@ -1,5 +1,4 @@
 import prisma from "@/PrismaDb/db";
-import { AuthorBody } from "@/PrismaDb/types";
 import { verifyToken } from "@/lib/generateToken";
 import { Article, PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
@@ -45,7 +44,7 @@ export async function GET(request: NextRequest) {
 }
 export async function POST(request: NextRequest) {
   try {
-    const body: AuthorBody = await request.json();
+    const body: { title: string; desc: string } = await request.json();
     const validation = z.object({
       title: z
         .string({

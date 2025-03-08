@@ -6,7 +6,7 @@ export const getAllArts = async ({
   page: string;
 }): Promise<{ data: Article[]; length: number; lengthPerPage: number }> => {
   const response = await fetch(
-    `http://localhost:3000/api/articles?page=${page}`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/articles?page=${page}`
   );
 
   if (!response.ok) {
@@ -15,7 +15,6 @@ export const getAllArts = async ({
 
   return await response.json();
 };
-// {{Domain}}/api/articles/search?searchText=no
 export const getArtsBySearch = async ({
   searchText,
 }: {
@@ -23,7 +22,7 @@ export const getArtsBySearch = async ({
 }): Promise<Article[]> => {
   try {
     const response = await fetch(
-      `http://localhost:3000//api/articles/search?searchText=${searchText}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/articles/search?searchText=${searchText}`
     );
 
     if (!response.ok) {

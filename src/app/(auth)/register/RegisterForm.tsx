@@ -19,11 +19,12 @@ const RegisterForm = () => {
     mode: "onChange",
   });
   async function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log(values);
     let params = {
       email: values.email,
       password: values.password,
     };
+    console.log(values);
+    router.replace("/");
   }
 
   return (

@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import MainTitle from "@/_components/Sharable/MainTitle";
 import InputRerender from "@/_components/Sharable/Input";
+import { useRouter } from "next/navigation";
 const LoginForm = () => {
+  let router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -22,6 +24,7 @@ const LoginForm = () => {
       password: values.password,
     };
     console.log(values);
+    router.replace("/");
   }
 
   return (

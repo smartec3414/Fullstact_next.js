@@ -12,6 +12,7 @@ const SearchBar = () => {
       return;
     }
     console.log(search);
+    router.push(`/articles/search?searchText=${search}`);
   };
   return (
     <div className="container mb-6 max-w-3xl">

@@ -35,7 +35,7 @@ export const getArtsBySearch = async ({
       throw new Error("Failed to fetch articles");
     }
 
-    return response.json();
+    return await response.json();
   } catch (e) {
     console.log(e);
     return [];

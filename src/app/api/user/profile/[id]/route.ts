@@ -33,7 +33,7 @@ export async function DELETE(
     }
     let decodedToken = jwt.verify(
       authToken,
-      process.env.NEXT_PUBLIC_JWT_SECRET as string
+      process.env.JWT_SECRET as string
     ) as PayloadDataType;
 
     if (findUser.id === decodedToken.id) {

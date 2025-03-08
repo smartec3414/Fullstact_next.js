@@ -1,4 +1,6 @@
 import ArticleItem from "@/_components/ArticlesPage/ArticleItem";
+import PaginationArticles from "@/_components/ArticlesPage/Pagination";
+import SearchBar from "@/_components/ArticlesPage/SearchBar";
 import { ArticleType } from "@/types/type";
 
 const page = async () => {
@@ -8,12 +10,14 @@ const page = async () => {
   }
   let data: ArticleType[] = await resposne.json();
   return (
-    <section className="mt-40">
+    <section className="mt-28 mb-10">
+      <SearchBar />
       <div className="container  grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {data?.slice(0, 18).map((article) => (
           <ArticleItem key={article.id} article={article} />
         ))}
       </div>
+      <PaginationArticles />
     </section>
   );
 };

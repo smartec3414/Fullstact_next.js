@@ -7,6 +7,7 @@ import { z } from "zod";
 export async function GET(request: NextRequest) {
   try {
     let pgNum: number = Number(request.nextUrl.searchParams.get("page"));
+    let allArtsLength = await prisma.article.count();
     let art;
     if (pgNum) {
       art = await prisma.article.findMany({
@@ -15,7 +16,8 @@ export async function GET(request: NextRequest) {
       });
       return NextResponse.json(
         {
-          length: art.length,
+          length: allArtsLength,
+          lengthPerPage: art.length,
           data: art,
         },
         {

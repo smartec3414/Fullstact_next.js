@@ -1,23 +1,40 @@
 import ArticleItem from "@/_components/ArticlesPage/ArticleItem";
 import PaginationArticles from "@/_components/ArticlesPage/Pagination";
 import SearchBar from "@/_components/ArticlesPage/SearchBar";
-import { ArticleType } from "@/types/type";
+import { getAllArts } from "@/callingApi/getAllArts";
+import { Article } from "@prisma/client";
 
-const page = async () => {
-  let resposne = await fetch("https://jsonplaceholder.typicode.com/posts");
-  if (!resposne.ok) {
-    throw new Error("Failed to fetch articles");
-  }
-  let data: ArticleType[] = await resposne.json();
+const page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  let { page } = await searchParams;
+  let data = await getAllArts({ page });
+  let numberOfPages = Math.ceil(data.length / 6);
   return (
-    <section className="mt-28 mb-10">
+    <section
+      style={{ minHeight: "calc(100vh - 150px)" }}
+      className="mt-28 mb-10">
       <SearchBar />
       <div className="container  grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {data?.slice(0, 18).map((article) => (
-          <ArticleItem key={article.id} article={article} />
-        ))}
+        {data.data.length > 0 ? (
+          data?.data
+            ?.slice(0, 6)
+            .map((article) => (
+              <ArticleItem key={article.id} article={article} />
+            ))
+        ) : (
+          <h2 className="text-2xl font-semibold text-center capitalize col-span-3">
+            no articles found
+          </h2>
+        )}
       </div>
-      <PaginationArticles />
+      <PaginationArticles
+        pageNumber={parseInt(page)}
+        numberOfPages={numberOfPages}
+        route="/articles"
+      />
     </section>
   );
 };

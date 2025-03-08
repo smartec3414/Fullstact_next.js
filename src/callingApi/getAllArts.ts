@@ -5,15 +5,20 @@ export const getAllArts = async ({
 }: {
   page: string;
 }): Promise<{ data: Article[]; length: number; lengthPerPage: number }> => {
-  const response = await fetch(
-    `http://localhost:3000/api/articles?page=${page}`
-  );
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/articles?page=${page}`
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch articles");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+    return { data: [], length: 0, lengthPerPage: 0 }; // Return an empty object to prevent crashes
   }
-
-  return response.json();
 };
 // {{Domain}}/api/articles/search?searchText=no
 export const getArtsBySearch = async ({

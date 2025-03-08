@@ -9,7 +9,7 @@ const page = async ({
 }: {
   searchParams: Promise<{ page: string }>;
 }) => {
-  let { page } = await searchParams;
+  let { page = "1" } = await searchParams;
   let data = await getAllArts({ page });
   let numberOfPages = Math.ceil(data.length / 6);
   return (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import { ThemeProvider } from "@/_components/Navigation/ThemeProvider";
 import Header from "@/_components/Navigation/Header";
+import { Toaster } from "react-hot-toast";
 export const metadata: Metadata = {
   title: "Cloud Hoisting",
   description: "Cloud Hoisting Platform",
@@ -28,6 +29,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <Toaster position="bottom-right" reverseOrder={false} />
         </ThemeProvider>
       </body>
     </html>

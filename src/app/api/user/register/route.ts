@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/PrismaDb/db";
 import { z } from "zod";
-import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { generateToken } from "@/lib/generateToken";
 import { serialize } from "cookie";
 export async function POST(request: NextRequest) {
   try {
-    let { username, email, password }: User = await request.json();
+    const { username, email, password } = await request.json();
+
     let validationRegister = z.object({
       username: z
         .string({
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         username,
         email,
         password: HashedPassword,
-        isAdmin: false, // ← أضف هذا السطر
+        isAdmin: false,
       },
       select: {
         username: true,
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         id: true,
         createdAt: true,
         updatedAt: true,
-        isAdmin: true, // ← أضف هذا السطر لضمان إرجاع القيمة
+        isAdmin: true,
       },
     });
     let token = generateToken({ id: newUser.id, username, isAdmin: false });

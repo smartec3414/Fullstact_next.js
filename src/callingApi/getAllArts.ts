@@ -1,3 +1,4 @@
+import { DOMAIN } from "@/constants/domain";
 import { Article } from "@prisma/client";
 
 export const getAllArts = async ({
@@ -5,9 +6,7 @@ export const getAllArts = async ({
 }: {
   page: string;
 }): Promise<{ data: Article[]; length: number; lengthPerPage: number }> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/articles?page=${page}`
-  );
+  const response = await fetch(`${DOMAIN}/api/articles?page=${page}`);
 
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -22,7 +21,7 @@ export const getArtsBySearch = async ({
 }): Promise<Article[]> => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/articles/search?searchText=${searchText}`
+      `${DOMAIN}/api/articles/search?searchText=${searchText}`
     );
 
     if (!response.ok) {

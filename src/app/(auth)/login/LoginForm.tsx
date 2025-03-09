@@ -8,8 +8,15 @@ import { Form } from "@/components/ui/form";
 import MainTitle from "@/_components/Sharable/MainTitle";
 import InputRerender from "@/_components/Sharable/Input";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { DOMAIN } from "@/constants/domain";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import LoadingBtn from "@/_components/Sharable/LoadingBtn";
 const LoginForm = () => {
   let router = useRouter();
+  let [loading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -19,12 +26,25 @@ const LoginForm = () => {
     mode: "onChange",
   });
   async function onSubmit(values: z.infer<typeof loginSchema>) {
+    setLoading(true);
     let params = {
       email: values.email,
       password: values.password,
     };
-    console.log(values);
-    router.replace("/");
+    try {
+      let response = await axios.post(`${DOMAIN}/api/user/login`, params);
+      if (response.status === 200) {
+        toast.success("Login success");
+        setLoading(false);
+        setTimeout(() => {
+          router.replace("/");
+          router.refresh();
+        }, 1500);
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -49,8 +69,11 @@ const LoginForm = () => {
             type="text"
             placeholder="enter password"
           />
-          <Button className={`w-full`} type="submit">
-            Login
+          <Button
+            disabled={loading}
+            className={`w-full ${loading && "cursor-not-allowed"}`}
+            type="submit">
+            {loading ? <LoadingBtn /> : "Login"}
           </Button>
         </div>
       </form>

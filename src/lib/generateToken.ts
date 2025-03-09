@@ -6,21 +6,30 @@ export interface PayloadDataType {
   username: string;
 }
 export function generateToken(payloadData: PayloadDataType): string {
-  return jwt.sign(payloadData, process.env.NEXT_PUBLIC_JWT_SECRET as string);
+  return jwt.sign(payloadData, process.env.JWT_SECRET as string);
 }
 export function verifyToken(request: NextRequest): PayloadDataType | null {
   let authToken = request.cookies.get("tokenNameInBrowser")?.value;
-
   if (!authToken) {
     return null;
   }
-
   try {
     return jwt.verify(
       authToken,
-      process.env.NEXT_PUBLIC_JWT_SECRET as string
+      process.env.JWT_SECRET as string
     ) as PayloadDataType;
   } catch (error) {
     return null; // إرجاع null إذا كان التوكن غير صالح
+  }
+}
+export function verifyTokenForFrontEnd(token: string): PayloadDataType | null {
+  try {
+    let tokenVerify = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as PayloadDataType;
+    return tokenVerify;
+  } catch (error) {
+    return null;
   }
 }

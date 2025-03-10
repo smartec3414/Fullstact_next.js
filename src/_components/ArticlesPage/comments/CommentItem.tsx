@@ -1,18 +1,19 @@
+import { CommentsType } from "@/types/type";
 import { FilePenLine, OctagonX } from "lucide-react";
 
-const CommentItem = () => {
+const CommentItem = ({ comment }: { comment: CommentsType }) => {
   return (
     <div className="bg-accent even:bg-background group hover:border-primary duration-300 border border-border p-2 sm:p-3 space-y-3 rounded-lg">
       <div className="flex items-center justify-between gap-2">
         <h2 className="font-semibold group-hover:text-primary">
-          Mostafa Rayan
+          {comment?.userComments?.username}
         </h2>
         <small className="bg-primary px-2 py-1 rounded-full text-white">
-          1/2/2024
+          {new Date(comment?.createdAt).toLocaleDateString("en-CA")}
         </small>
       </div>
       <p className="text-sm sm:text-base text-muted-foreground ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        {comment?.text}
       </p>
       <div className="flex items-center gap-2 justify-end">
         <FilePenLine className="size-6 cursor-pointer text-blue-600" />

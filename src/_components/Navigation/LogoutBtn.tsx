@@ -22,7 +22,7 @@ const LogoutBtn = () => {
       let response = await axios.get(`${DOMAIN}/api/user/logout`);
       if (response.status === 200) {
         toast.success("Logout successfully");
-        router.replace("/login");
+        router.replace("/");
         router.refresh();
       }
     } catch (e: any) {

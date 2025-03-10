@@ -1,4 +1,5 @@
 import { DOMAIN } from "@/constants/domain";
+import { SingleArticelType } from "@/types/type";
 import { Article } from "@prisma/client";
 
 export const getAllArts = async ({
@@ -33,4 +34,15 @@ export const getArtsBySearch = async ({
     console.log(e);
     return [];
   }
+};
+export const getOneArt = async ({
+  id,
+}: {
+  id: string;
+}): Promise<SingleArticelType> => {
+  let resposne = await fetch(`${DOMAIN}/api/articles/${id}`);
+  if (!resposne.ok) {
+    throw new Error("Failed to fetch one article");
+  }
+  return await resposne.json();
 };

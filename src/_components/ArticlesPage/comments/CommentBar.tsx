@@ -1,16 +1,35 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { DOMAIN } from "@/constants/domain";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-const CommentBar = () => {
+import toast from "react-hot-toast";
+const CommentBar = ({ articleId }: { articleId: string }) => {
   let [comment, setComment] = useState<string>("");
   let [error, setError] = useState<string>("");
-  let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  let router = useRouter();
+  let handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    let params = {
+      articleId: parseInt(articleId),
+      text: comment,
+    };
     e.preventDefault();
-    if (comment == "") {
+    if (comment.trim() == "") {
       setError("Please enter a comment term");
       return;
     }
-    console.log(comment);
+    try {
+      let res = await axios.post(`${DOMAIN}/api/comments`, params);
+      if (res.status === 201) {
+        setComment("");
+        toast.success("Comment added successfully");
+        router.refresh();
+      }
+    } catch (e: any) {
+      console.log(e);
+      toast.error(e.response.data.message);
+    }
   };
   return (
     <div className="my-6  ">

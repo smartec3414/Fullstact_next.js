@@ -1,3 +1,4 @@
+import { Article, Comment, User } from "@prisma/client";
 import { LucideIcon } from "lucide-react";
 export interface ArticleType {
   id: number;
@@ -23,3 +24,5 @@ export interface dashboardLinksType {
   url: string;
   icon: LucideIcon;
 }
+export type CommentsType = Comment & { userComments: User };
+export type SingleArticelType = Article & { comments: CommentsType[] };

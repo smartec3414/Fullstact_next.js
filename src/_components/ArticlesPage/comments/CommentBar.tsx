@@ -1,4 +1,5 @@
 "use client";
+import LoadingBtn from "@/_components/Sharable/LoadingBtn";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { DOMAIN } from "@/constants/domain";
 import axios from "axios";
@@ -8,13 +9,15 @@ import toast from "react-hot-toast";
 const CommentBar = ({ articleId }: { articleId: string }) => {
   let [comment, setComment] = useState<string>("");
   let [error, setError] = useState<string>("");
+  let [loading, setLoading] = useState<boolean>(false);
   let router = useRouter();
   let handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     let params = {
       articleId: parseInt(articleId),
       text: comment,
     };
-    e.preventDefault();
+    setLoading(true);
     if (comment.trim() == "") {
       setError("Please enter a comment term");
       return;
@@ -25,10 +28,12 @@ const CommentBar = ({ articleId }: { articleId: string }) => {
         setComment("");
         toast.success("Comment added successfully");
         router.refresh();
+        setLoading(false);
       }
     } catch (e: any) {
       console.log(e);
       toast.error(e.response.data.message);
+      setLoading(false);
     }
   };
   return (
@@ -49,9 +54,10 @@ const CommentBar = ({ articleId }: { articleId: string }) => {
             {error ? <p className="text-red-500 text-sm">{error}</p> : ""}
           </div>
           <Button
+            disabled={loading}
             className={(buttonVariants({ size: "lg" }), "py-2 px-8")}
             type="submit">
-            Send
+            {loading ? <LoadingBtn /> : "Send"}
           </Button>
         </div>
       </form>

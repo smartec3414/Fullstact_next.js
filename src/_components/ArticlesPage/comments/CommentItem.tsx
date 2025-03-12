@@ -1,7 +1,15 @@
+import { PayloadDataType } from "@/lib/generateToken";
 import { CommentsType } from "@/types/type";
-import { FilePenLine, OctagonX } from "lucide-react";
+import EditComment from "./EditComment";
+import DeleteComment from "./DeleteComment";
 
-const CommentItem = ({ comment }: { comment: CommentsType }) => {
+const CommentItem = ({
+  comment,
+  userData,
+}: {
+  comment: CommentsType;
+  userData: PayloadDataType | null;
+}) => {
   return (
     <div className="bg-accent even:bg-background group hover:border-primary duration-300 border border-border p-2 sm:p-3 space-y-3 rounded-lg">
       <div className="flex items-center justify-between gap-2">
@@ -15,10 +23,12 @@ const CommentItem = ({ comment }: { comment: CommentsType }) => {
       <p className="text-sm sm:text-base text-muted-foreground ">
         {comment?.text}
       </p>
-      <div className="flex items-center gap-2 justify-end">
-        <FilePenLine className="size-6 cursor-pointer text-blue-600" />
-        <OctagonX className="size-6 text-red-600 cursor-pointer" />
-      </div>
+      {userData?.id == comment.userComments.id && (
+        <div className="flex items-center gap-2 justify-end">
+          <EditComment comment={comment} />
+          <DeleteComment comment={comment} />
+        </div>
+      )}
     </div>
   );
 };

@@ -41,9 +41,13 @@ const SingleArtPage = async ({
         {data.comments.length > 0 ? (
           <div className="max-w-3xl mx-auto">
             <MainTitle title="Comments" />
-            <div className="space-y-3">
+            <div className="space-y-3 ">
               {data.comments?.map((comment: CommentsType) => (
-                <CommentItem key={comment.id} comment={comment} />
+                <CommentItem
+                  key={comment.id}
+                  comment={comment}
+                  userData={userData}
+                />
               ))}
             </div>
           </div>
